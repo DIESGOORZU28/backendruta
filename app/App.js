@@ -1,5 +1,7 @@
 const express = require('express');
+
 const cors = require('cors');
+
 const connectToDatabase = require('./db');
 const controllers = require('./controllers');
 const verifyToken = require('./middlewares/verifyToken');
