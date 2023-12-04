@@ -19,7 +19,7 @@ app.use(express.json());
 
 // Rutas para el primer servidor
 app.get('/user', verifyToken, controllers.getUserById);
-app.post('/https:rutaback.up.railway.app/register', controllers.register);
+app.post('/https://la-ruta-magica-del-cafe.vercel.app/rutaback.up.railway.app/register', controllers.register);
 app.post('/login', controllers.login);
 
 // Rutas y configuración para el segundo servidor (Stripe)
