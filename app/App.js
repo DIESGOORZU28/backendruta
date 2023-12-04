@@ -1,7 +1,5 @@
 const express = require('express');
-
 const cors = require('cors');
-
 const connectToDatabase = require('./db');
 const controllers = require('./controllers');
 const verifyToken = require('./middlewares/verifyToken');
@@ -9,7 +7,11 @@ const stripe = require('stripe')('sk_test_51O5Gz0FqzLAtNtxMKvc4IiuLwwY8djJrjXVtu
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://la-ruta-magica-del-cafe.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Configura esto si estás manejando cookies o sesiones
+}));
 app.use(express.json());
 
 // Rutas para el primer servidor
@@ -55,10 +57,10 @@ app.listen(PORT1, () => {
   console.log(`Primer servidor funcionando en el puerto ${PORT1}`);
 });
 
+// Inicio del segundo servidor en el puerto 4000
 const PORT2 = process.env.PORT || 4000;
 app.listen(PORT2, () => {
   console.log(`Segundo servidor iniciado en el puerto ${PORT2}`);
 });
-
 
 module.exports = app;
