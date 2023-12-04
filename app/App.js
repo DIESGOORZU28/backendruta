@@ -50,15 +50,15 @@ app.post("/checkout", async (req, res) => {
 connectToDatabase();
 
 // Inicio del servidor en el puerto 5000
-const PORT1 = 5000;
+const PORT1 = process.env.PORT || 5000;
 app.listen(PORT1, () => {
   console.log(`Primer servidor funcionando en el puerto ${PORT1}`);
 });
 
-// Inicio del segundo servidor en el puerto 4000
-const PORT2 = 4000;
+const PORT2 = process.env.PORT || 4000;
 app.listen(PORT2, () => {
   console.log(`Segundo servidor iniciado en el puerto ${PORT2}`);
 });
+
 
 module.exports = app;
