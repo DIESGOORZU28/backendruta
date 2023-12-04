@@ -3,16 +3,18 @@ const cors = require('cors');
 const connectToDatabase = require('./db');
 const controllers = require('./controllers');
 const verifyToken = require('./middlewares/verifyToken');
-const stripe = require('stripe')('sk_test_51O5Gz0FqzLAtNtxMKvc4IiuLwwY8djJrjXVtuFiiI6oF7YNe0mOJPY3nRtHNrM1aVUT6bQth9SvKEfEBvUAwiMPG00FXcslwub'); // Coloca tu clave secreta de Stripe aquí
+const stripe = require('stripe')('sk_test_...'); // Reemplaza con tu clave secreta de Stripe
 
 const app = express();
 
 // Configuración de CORS
-app.use(cors({
-  origin: 'https://la-ruta-magica-del-cafe.vercel.app', // o '*' para permitir cualquier origen
+const corsOptions = {
+  origin: 'https://la-ruta-magica-del-cafe.vercel.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Rutas para el primer servidor
@@ -52,16 +54,14 @@ app.post("/checkout", async (req, res) => {
 // Conexión a la base de datos para el primer servidor
 connectToDatabase();
 
-// Puertos para los servidores
-const PORT1 = process.env.PORT || 5000;
-const PORT2 = process.env.PORT || 4000;
-
 // Inicio del servidor en el puerto 5000
+const PORT1 = process.env.PORT || 5000;
 app.listen(PORT1, () => {
   console.log(`Primer servidor funcionando en el puerto ${PORT1}`);
 });
 
 // Inicio del segundo servidor en el puerto 4000
+const PORT2 = process.env.PORT || 4000;
 app.listen(PORT2, () => {
   console.log(`Segundo servidor iniciado en el puerto ${PORT2}`);
 });
