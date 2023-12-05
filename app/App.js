@@ -64,7 +64,7 @@ app.listen(PORT1, () => {
 });
 
 // Inicio del segundo servidor en el puerto 4000
-const PORT2 = process.env.PORT_STRIPE || 4000;
+const PORT2 = process.env.PORT_STRIPE || 4001;
 app.listen(PORT2, () => {
   console.log(`Segundo servidor iniciado en el puerto ${PORT2}`);
 });
