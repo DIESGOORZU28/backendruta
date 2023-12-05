@@ -3,7 +3,7 @@ const cors = require('cors');
 const connectToDatabase = require('./db');
 const controllers = require('./controllers');
 const verifyToken = require('./middlewares/verifyToken');
-const stripe = require('stripe')('sk_test_...'); // Reemplaza con tu clave secreta de Stripe
+const stripe = require('stripe')('sk_test_51O5Gz0FqzLAtNtxMKvc4IiuLwwY8djJrjXVtuFiiI6oF7YNe0mOJPY3nRtHNrM1aVUT6bQth9SvKEfEBvUAwiMPG00FXcslwub'); // Reemplaza con tu clave secreta de Stripe
 
 const app = express();
 
