@@ -25,7 +25,6 @@ app.post('/login', controllers.login);
 // Rutas y configuración para el segundo servidor (Stripe)
 app.use(express.static("public"));
 app.post("/checkout", async (req, res) => {
-  // Lógica para el segundo servidor (Stripe)
   const items = req.body.items;
   let arrayItems = [];
   items.forEach((item) => {
@@ -35,21 +34,25 @@ app.post("/checkout", async (req, res) => {
     });
   });
 
-  // Lógica específica de Stripe para crear una sesión de checkout
-  // Reemplaza con tu propia lógica de Stripe
-  const session = await stripe.checkout.sessions.create({
-    line_items: arrayItems,
-    mode: "payment",
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cancel",
-  });
+  try {
+    // Lógica específica de Stripe para crear una sesión de checkout
+    const session = await stripe.checkout.sessions.create({
+      line_items: arrayItems,
+      mode: "payment",
+      success_url: process.env.STRIPE_SUCCESS_URL || "http://localhost:3000/success",
+      cancel_url: process.env.STRIPE_CANCEL_URL || "http://localhost:3000/cancel",
+    });
 
-  res.send(
-    JSON.stringify({
+    res.json({
       url: session.url,
-    })
-  );
+    });
+  } catch (error) {
+    console.error("Error al crear la sesión de Stripe:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 });
+
+
 
 // Conexión a la base de datos para el primer servidor
 connectToDatabase();
