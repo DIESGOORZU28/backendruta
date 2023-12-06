@@ -5,10 +5,9 @@ const controllers = require('./controllers');
 const verifyToken = require('./middlewares/verifyToken');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-
 const app = express();
 
-
+// Configuración de CORS
 const corsOptions = {
   origin: 'https://la-ruta-magica-del-cafe.vercel.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -18,12 +17,21 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Rutas para el primer servidor
+// Rutas del servidor
 app.get('/user', verifyToken, controllers.getUserById);
 app.post('/register', controllers.register);
 app.post('/login', controllers.login);
 
-// Rutas y configuración para el segundo servidor (Stripe)
+// Conexión a la base de datos
+connectToDatabase();
+
+// Inicio del servidor para la base de datos en el puerto 5000
+const PORT1 = process.env.PORT || 5000;
+app.listen(PORT1, () => {
+  console.log(`Servidor para la base de datos funcionando en el puerto ${PORT1}`);
+});
+
+// Rutas y configuración para el servidor de Stripe
 app.use(express.static("public"));
 app.post("/checkout", async (req, res) => {
   const items = req.body.items;
@@ -36,7 +44,6 @@ app.post("/checkout", async (req, res) => {
   });
 
   try {
-    // Lógica específica de Stripe para crear una sesión de checkout
     const session = await stripe.checkout.sessions.create({
       line_items: arrayItems,
       mode: "payment",
@@ -53,21 +60,10 @@ app.post("/checkout", async (req, res) => {
   }
 });
 
-
-
-// Conexión a la base de datos para el primer servidor
-connectToDatabase();
-
-// Inicio del servidor en el puerto 5000
-const PORT1 = process.env.PORT || 5000;
-app.listen(PORT1, () => {
-  console.log(`Primer servidor funcionando en el puerto ${PORT1}`);
-});
-
-// Inicio del segundo servidor en el puerto 4000
+// Inicio del servidor para Stripe en el puerto 4000
 const PORT2 = process.env.PORT_STRIPE || 4001;
 app.listen(PORT2, () => {
-  console.log(`Segundo servidor iniciado en el puerto ${PORT2}`);
+  console.log(`Servidor para Stripe iniciado en el puerto ${PORT2}`);
 });
 
 module.exports = app;
