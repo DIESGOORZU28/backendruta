@@ -8,7 +8,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// Configuración de CORS
+
 const corsOptions = {
   origin: 'https://la-ruta-magica-del-cafe.vercel.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
