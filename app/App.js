@@ -22,15 +22,6 @@ app.get('/user', verifyToken, controllers.getUserById);
 app.post('/register', controllers.register);
 app.post('/login', controllers.login);
 
-// Conexión a la base de datos
-connectToDatabase();
-
-// Inicio del servidor para la base de datos en el puerto 5000
-const PORT1 = process.env.PORT || 5000;
-app.listen(PORT1, () => {
-  console.log(`Servidor para la base de datos funcionando en el puerto ${PORT1}`);
-});
-
 // Rutas y configuración para el servidor de Stripe
 app.use(express.static("public"));
 app.post("/checkout", async (req, res) => {
@@ -60,10 +51,13 @@ app.post("/checkout", async (req, res) => {
   }
 });
 
-// Inicio del servidor para Stripe en el puerto 4000
-const PORT2 = process.env.PORT_STRIPE || 4001;
-app.listen(PORT2, () => {
-  console.log(`Servidor para Stripe iniciado en el puerto ${PORT2}`);
+// Conexión a la base de datos
+connectToDatabase();
+
+// Inicio del servidor en un solo puerto
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Servidor funcionando en el puerto ${PORT}`);
 });
 
 module.exports = app;
